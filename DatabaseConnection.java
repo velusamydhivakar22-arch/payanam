@@ -50,7 +50,66 @@ public class DatabaseConnection {
         return false;
     }
 
+    /**
+     * Example 1: Retrieve and display trains from the database
+     */
+    public static void printAllTrains() {
+        String sql = "SELECT id, number, name, source_code, destination_code, departure_time, arrival_time FROM trains LIMIT 5";
+        System.out.println("\n--- 1. RETRIEVING TRAINS (SELECT query) ---");
+        try (Connection conn = getConnection();
+             Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery(sql)) {
+
+            while (rs.next()) {
+                String id = rs.getString("id");
+                String number = rs.getString("number");
+                String name = rs.getString("name");
+                String src = rs.getString("source_code");
+                String dest = rs.getString("destination_code");
+                String dep = rs.getString("departure_time");
+                String arr = rs.getString("arrival_time");
+
+                System.out.printf("  * [%s] %s (%s): %s -> %s | Dep: %s, Arr: %s%n",
+                        id, name, number, src, dest, dep, arr);
+            }
+        } catch (SQLException e) {
+            System.err.println("Error fetching trains: " + e.getMessage());
+        }
+    }
+
+    /**
+     * Example 2: Parameterized query using PreparedStatement
+     */
+    public static void searchTrainsByRoute(String sourceCode, String destCode) {
+        String sql = "SELECT id, number, name, departure_time, arrival_time FROM trains WHERE source_code = ? AND destination_code = ?";
+        System.out.printf("\n--- 2. RETRIEVING TRAINS FOR ROUTE: %s -> %s ---%n", sourceCode, destCode);
+        try (Connection conn = getConnection();
+             java.sql.PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setString(1, sourceCode);
+            pstmt.setString(2, destCode);
+
+            try (ResultSet rs = pstmt.executeQuery()) {
+                boolean found = false;
+                while (rs.next()) {
+                    found = true;
+                    System.out.printf("  * Train #%s: %s (Dep: %s, Arr: %s)%n",
+                            rs.getString("number"), rs.getString("name"),
+                            rs.getString("departure_time"), rs.getString("arrival_time"));
+                }
+                if (!found) {
+                    System.out.println("  No direct trains found for this route.");
+                }
+            }
+        } catch (SQLException e) {
+            System.err.println("Error querying route: " + e.getMessage());
+        }
+    }
+
     public static void main(String[] args) {
-        testConnection();
+        if (testConnection()) {
+            printAllTrains();
+            searchTrainsByRoute("MDU", "MS");
+        }
     }
 }
