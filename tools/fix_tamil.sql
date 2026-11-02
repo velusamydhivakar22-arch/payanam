@@ -1,0 +1,11 @@
+﻿SET NAMES utf8mb4;
+UPDATE stations SET name_tamil = 'சென்னை சென்ட்ரல்' WHERE code = 'MAS';
+UPDATE stations SET name_tamil = 'சென்னை எழும்பூர்' WHERE code = 'MS';
+UPDATE stations SET name_tamil = 'கோயம்புத்தூர் சந்திப்பு' WHERE code = 'CBE';
+UPDATE stations SET name_tamil = 'மதுரை சந்திப்பு' WHERE code = 'MDU';
+UPDATE stations SET name_tamil = 'திருச்சிராப்பள்ளி சந்திப்பு' WHERE code = 'TPJ';
+UPDATE stations SET name_tamil = 'சேலம் சந்திப்பு' WHERE code = 'SA';
+UPDATE stations SET name_tamil = 'பெங்களூரு நகரம்' WHERE code = 'SBC';
+UPDATE stations SET name_tamil = 'திருவனந்தபுரம் சென்ட்ரல்' WHERE code = 'TVC';
+UPDATE stations SET name_tamil = 'புது தில்லி' WHERE code = 'NDLS';
+UPDATE stations SET name_tamil = 'மும்பை சி.எஸ்.எம்.டி' WHERE code = 'CSTM';
